@@ -1,5 +1,6 @@
 // Copyright (c) 2013 CloudFlare, Inc.
 
+// Package bytepool is deprecated
 package bytepool
 
 import (
@@ -22,6 +23,8 @@ type BytePool struct {
 // Initialize BytePool structure. Starts draining regularly if
 // drainPeriod is non zero. MaxSize specifies the maximum length of a
 // byte slice that should be cached (rounded to the next power of 2).
+//
+// Deprecated: Use sync.Pool from the stdlib instead.
 func (tp *BytePool) Init(drainPeriod time.Duration, maxSize uint32) {
 	maxSizeLog := log2Ceil(maxSize)
 	tp.maxSize = (1 << maxSizeLog) - 1
@@ -76,7 +79,7 @@ func (tp *BytePool) Get(size int) []byte {
 	return x[:size]
 }
 
-// Remove all items from the pool and make them availabe for garbage
+// Drain removes all items from the pool and make them availabe for garbage
 // collection.
 func (tp *BytePool) Drain() {
 	for o := 0; o < len(tp.list_of_pools); o++ {
